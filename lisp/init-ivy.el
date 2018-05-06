@@ -77,5 +77,9 @@ instead."
 (when (maybe-require-package 'ivy-xref)
   (setq xref-show-xrefs-function 'ivy-xref-show-xrefs))
 
+;; let C-x C-m trigger counsel-M-x
+(global-set-key (kbd "C-x C-m") 'counsel-M-x)
+
+
 
 (provide 'init-ivy)

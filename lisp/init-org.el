@@ -1,3 +1,6 @@
+(require-package 'org-plus-contrib)
+(require 'org)
+
 (when *is-a-mac*
   (maybe-require-package 'grab-mac-link))
 
@@ -111,6 +114,9 @@ typical word processor."
          "* %? :NOTE:\n%U\n%a\n" :clock-resume t)
         ))
 
+
+;;; Agenda path
+(setq org-agenda-files (list (concat (getenv "HOME") "/Dropbox/agenda")))
 
 
 ;;; Refiling
@@ -165,6 +171,7 @@ typical word processor."
 (setq org-todo-keyword-faces
       (quote (("NEXT" :inherit warning)
               ("PROJECT" :inherit font-lock-string-face))))
+
 
 
 
@@ -348,6 +355,81 @@ typical word processor."
 ;;                   (re-search-backward "^[0-9]+:[0-9]+-[0-9]+:[0-9]+ " nil t))
 ;;                 (insert (match-string 0))))))
 
+
+;;; org link
+
+;;;; ol-jira
+(defvar ol-jira-url-prefix "http://ol-jira.us.oracle.com/browse")
+(org-link-set-parameters
+ "ol-jira"
+ :follow (lambda (path) (browse-url (concat ol-jira-url-prefix "/" path)))
+ :export (lambda (path desc backend)
+           (cond
+            ((eq 'html backend)
+             (format "<a href=\"%s/%s\">%s[ol-jira]</a>"
+                     ol-jira-url-prefix path (or desc path)))
+            ((eq 'goldbar/confluence backend)
+             (format "{jira:%s}" path))
+            ))
+ :face '(:foreground "red" :inherit)
+ :help-echo "oracle labs jira link")
+
+;;;; jira (oracle)
+(defvar jira-url-prefix "https://jira.oraclecorp.com/jira/browse")
+(org-link-set-parameters
+ "jira"
+ :follow (lambda (path) (browse-url (concat jira-url-prefix "/" path)))
+ :export (lambda (path desc backend)
+           (cond
+            ((eq 'html backend)
+             (format "<a href=\"%s/%s\">%s[ol-ira]</a>"
+                     jira-url-prefix path (or desc path)))
+            ((eq 'goldbar/confluence backend)
+             (format "[%s/%s]" jira-url-prefix path))
+            ))
+ :face '(:foreground "red" :inherit)
+ :help-echo "oracle labs jira link")
+
+;;;; wikipedia
+(defvar wikipedia-url-prefix "https://en.wikipedia.org/wiki")
+(org-link-set-parameters
+ "wikipedia"
+ :follow (lambda (path) (browse-url (concat wikipedia-url-prefix "/" path)))
+ :export (lambda (path desc backend)
+           (cond
+            ((eq 'html backend)
+             (format "<a href=\"%s/%s\">%s[wikipedia]</a>"
+                     wikipedia-url-prefix path (or desc path)))))
+ :face '(:foreground "blue" :inherit)
+ :help-echo "wikipedia link")
+
+
+;;;; magit: format "<git dir>@<branch>". <branch> is optional
+(org-link-set-parameters
+ "magit"
+ :follow (lambda (path)
+           (let* ((splited (split-string path "@" t nil))
+                  (dir (nth 0 splited))
+                  (branch (nth 1 splited))
+                  )
+             (magit-status-internal dir)
+             (if (not (eq branch nil))
+                 (magit-checkout branch))))
+ :face '(:foreground "red" :inherit)
+ :export (lambda (path desc backend)
+           (let* ((splited (split-string path "@" t nil))
+                  (dir (nth 0 splited))
+                  (branch (nth 1 splited)))
+             (format "%s" branch)
+             )
+           )
+ )
+
+
+
+;;; variable pitch mode
+(require 'org-variable-pitch nil t)
+
 
 (after-load 'org
   (define-key org-mode-map (kbd "C-M-<up>") 'org-up-element)

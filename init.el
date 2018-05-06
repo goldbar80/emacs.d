@@ -29,6 +29,7 @@
 ;; Bootstrap config
 ;;----------------------------------------------------------------------------
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+(require 'init-proxy)
 (require 'init-utils)
 (require 'init-site-lisp) ;; Must come before elpa, as it may provide package.el
 ;; Calls (package-initialize)
@@ -169,9 +170,21 @@
 ;;----------------------------------------------------------------------------
 ;; Allow users to provide an optional "init-local" containing personal settings
 ;;----------------------------------------------------------------------------
+;; custom by jk
+(require-package 'eyebrowse)
+(eyebrowse-mode 1)
+(require-package 'window-numbering)
+(window-numbering-mode 1)
+(require-package 'gradle-mode)
+(gradle-mode 1)
+(setq gradle-use-gradlew t)
+(setq gradle-gradlew-executable "./gradlew")
+
+(require 'init-all-the-icons)
+(require 'init-theme)
+(require 'init-mu4e)
+(require 'init-groovy)
 (require 'init-local nil t)
-
-
 
 (provide 'init)
 
