@@ -183,6 +183,7 @@
 (require 'init-all-the-icons)
 (require 'init-theme)
 (require 'init-mu4e)
+(require 'init-java)
 (require 'init-groovy)
 (require 'init-local nil t)
 
