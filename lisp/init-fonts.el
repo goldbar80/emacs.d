@@ -18,25 +18,28 @@ This is helpful for writeroom-mode, in particular."
 
 ;;; font setting
 
-
-(let ((fontset "fontset-default"))
-  (if (eq system-type 'darwin)
+(defun jk/set-fonts ()
+  "Set fonts."
+  (interactive)
+  (let ((fontset "fontset-default"))
+    (if (eq system-type 'darwin)
+        (progn
+          (set-face-attribute 'default nil :font fontset :height 140)
+          (set-fontset-font fontset 'unicode (font-spec :family "Source Code Pro" :weight 'light :registry "unicode-bmp"))
+          (set-fontset-font fontset 'unicode (font-spec :family "Symbola monospacified for DejaVu Sans Mono" :registry "unicode-bmp"))
+          (set-fontset-font fontset 'latin
+                            (font-spec :family "Source Code Pro" :weight 'light :registry "unicode-bmp"))
+          (set-fontset-font fontset 'hangul
+                            '("NanumGothicCoding" . "unicode-bmp")))
       (progn
-        (set-face-attribute 'default nil :font fontset :height 140)
-        (set-fontset-font fontset 'unicode (font-spec :family "Source Code Pro" :weight 'light :registry "unicode-bmp"))
-        (set-fontset-font fontset 'unicode (font-spec :family "Symbola monospacified for DejaVu Sans Mono" :registry "unicode-bmp"))
+        (set-face-attribute 'default nil :font fontset :height 125)
+        (set-fontset-font fontset 'unicode (font-spec :family "Iosevka" :weight 'medium :registry "unicode-bmp"))
         (set-fontset-font fontset 'latin
-                          (font-spec :family "Source Code Pro" :weight 'light :registry "unicode-bmp"))
-        (set-fontset-font fontset 'hangul
-                          '("NanumGothicCoding" . "unicode-bmp")))
-    (progn
-      (set-face-attribute 'default nil :font fontset :height 125)
-      (set-fontset-font fontset 'unicode (font-spec :family "Iosevka" :weight 'medium :registry "unicode-bmp"))
-      (set-fontset-font fontset 'latin
                                         ;(font-spec :family "Source Code Pro" :registry "unicode-bmp"))
-                        (font-spec :family "Iosevka" :weight 'medium :registry "unicode-bmp"))
-      (set-face-attribute 'variable-pitch nil :family "Roboto")
-      (set-fontset-font fontset 'hangul
-                        '("NanumGothicCoding" . "unicode-bmp")))))
-
+                          (font-spec :family "Iosevka" :weight 'medium :registry "unicode-bmp"))
+        (set-face-attribute 'variable-pitch nil :family "Roboto")
+        (set-fontset-font fontset 'hangul
+                          '("NanumGothicCoding" . "unicode-bmp")))))
+  )
+(jk/set-fonts)
 (provide 'init-fonts)
