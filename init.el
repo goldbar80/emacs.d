@@ -101,7 +101,7 @@
 (require 'init-haskell)
 (require 'init-elm)
 (require 'init-purescript)
-(require 'init-ruby)
+                                        ;(require 'init-ruby)
 (require 'init-rails)
 (require 'init-sql)
 (require 'init-rust)
@@ -185,6 +185,7 @@
 (require 'init-mu4e)
 (require 'init-java)
 (require 'init-groovy)
+(require 'init-pdf)
 (require 'init-local nil t)
 
 (provide 'init)
