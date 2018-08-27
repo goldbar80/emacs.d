@@ -179,6 +179,7 @@
 (gradle-mode 1)
 (setq gradle-use-gradlew t)
 (setq gradle-gradlew-executable "./gradlew")
+(add-to-list 'tramp-remote-path 'tramp-own-remote-path) ;; repect remote 'path' env. variable
 
 (require 'init-all-the-icons)
 (require 'init-theme)
