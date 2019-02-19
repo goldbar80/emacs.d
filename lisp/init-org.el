@@ -375,7 +375,9 @@ typical word processor."
 (defvar ol-jira-url-prefix "http://ol-jira.us.oracle.com/browse")
 (org-link-set-parameters
  "ol-jira"
- :follow (lambda (path) (browse-url (concat ol-jira-url-prefix "/" path)))
+ :follow (lambda (path) (if (string= path "TBD")
+                       (browse-url "http://ol-jira.us.oracle.com/secure/CreateIssue!default.jspa")
+                     (browse-url (concat ol-jira-url-prefix "/" path))))
  :export (lambda (path desc backend)
            (cond
             ((eq 'html backend)
@@ -437,6 +439,23 @@ typical word processor."
              )
            )
  )
+
+;;;; ol-bitbucket-pr
+(defvar ol-bitbucket-pr-url-prefix "https://ol-bitbucket.us.oracle.com/projects/PGX/repos/pgx/pull-requests")
+(org-link-set-parameters
+ "ol-bitbucket-pr"
+ :follow (lambda (path) (browse-url (concat ol-bitbucket-pr-url-prefix "/" path)))
+ :export (lambda (path desc backend)
+           (cond
+            ((eq 'html backend)
+             (format "<a href=\"%s/%s\">%s[ol-bitbueket-pr]</a>"
+                     ol-bitbucket-pr-url-prefix path (or desc path)))
+            ((eq 'goldbar/confluence backend)
+             (format "[%s/%s]" ol-bitbucket-pr-url-prefix path))
+            ))
+ :face '(:foreground "green" :inherit)
+ :help-echo "ol-bitbucket-pr")
+
 
 
 

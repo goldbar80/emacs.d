@@ -124,5 +124,12 @@
 
 (setq mu4e-alert-modeline-formatter #'goldbar/mu4e-alert-mode-line-formatter)
 
+;; conversation
+(require-package 'mu4e-conversation)
+(with-eval-after-load 'mu4e (require 'mu4e-conversation))
+
+;; folding
+(with-eval-after-load 'mu4e (require 'mu4e-thread-folding))
+
 (provide 'init-mu4e)
 ;;; mu4e-goldbar.el ends here

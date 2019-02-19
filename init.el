@@ -187,6 +187,7 @@
 (require 'init-java)
 (require 'init-groovy)
 (require 'init-pdf)
+(require 'init-eterm)
 (require 'init-local nil t)
 
 (provide 'init)

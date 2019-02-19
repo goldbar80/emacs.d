@@ -1,3 +1,6 @@
+;; remove window decoration
+;;(set-frame-parameter nil 'undecorated t)
+
 (require-package 'doom-themes)
 (require 'doom-themes)
 
@@ -18,6 +21,9 @@
 ;; Corrects (and improves) org-mode's native fontification.
 (doom-themes-org-config)
 
+(use-package spaceline-all-the-icons
+  :after spaceline
+  :config (spaceline-all-the-icons-theme))
 
 (require-package 'spaceline)
 (require 'spaceline)
@@ -165,8 +171,8 @@
 ;;     (when (bound-and-true-p ensime-mode)
 ;;       (goldbar/ensime-modeline-string)))
 
-;;(spaceline-spacemacs-theme `((ensime time) :separator " | "))
-(spaceline-spacemacs-theme)
+(spaceline-spacemacs-theme `((time) :separator " | "))
+;;(spaceline-spacemacs-theme)
 
 (spaceline-info-mode)
 
