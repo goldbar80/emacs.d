@@ -2,10 +2,10 @@
 
 ;;; Code:
 ;; Some general settings
-;(setq org-directory "~/org")
-;(setq org-default-notes-file "~/org/refile.org")
-;(defvar org-default-diary-file "~/org/diary.org")
-;(setq org-agenda-files (quote ("~/org")))
+                                        ;(setq org-directory "~/org")
+                                        ;(setq org-default-notes-file "~/org/refile.org")
+                                        ;(defvar org-default-diary-file "~/org/diary.org")
+                                        ;(setq org-agenda-files (quote ("~/org")))
 
 ;; Display properties
 (setq org-agenda-window-setup 'current-window)
@@ -13,6 +13,8 @@
 (setq org-tags-column 80)
 (setq org-agenda-tags-column org-tags-column)
 (setq org-agenda-sticky t)
+
+(setq org-default-notes-file "~/Dropbox/agenda/.refile.org")
 
 ;; Set default column view headings: Task Effort Clock_Summary
 (setq org-columns-default-format "%50ITEM(Task) %10Effort(Effort){:} %10CLOCKSUM %16TIMESTAMP_IA")
@@ -287,63 +289,66 @@ show this warning instead."
 ;; Custom agenda command definitions
 (setq org-agenda-custom-commands
       '(("h" "Habits" agenda fi"STYLE=\"habit\""
-   ((org-agenda-overriding-header "Habits")
-    (org-agenda-sorting-strategy
-     '(todo-state-down effort-up category-keep))))
-  (" " "Export Schedule" ((agenda "" ((org-agenda-overriding-header "Today's Schedule:")
-              (org-agenda-span 'day)
-              (org-agenda-ndays 1)
-              (org-agenda-start-on-weekday nil)
-              (org-agenda-start-day "+0d")
-              (org-agenda-log-mode-items '(closed clock))
-              (org-agenda-todo-ignore-deadlines nil)))
-        (tags-todo "-INACTIVE-CANCELLED-ARCHIVE/!INPROGRESS"
-             ((org-agenda-overriding-header "Next Tasks:")
-              ))
-        ;; (tags "REFILE-ARCHIVE-REFILE=\"nil\""
-        ;;       ((org-agenda-overriding-header "Tasks to Refile:")
-        ;;        (org-tags-match-list-sublevels nil)))
-        (tags-todo "-INACTIVE-HOLD-CANCELLED-REFILE-ARCHIVEr/!"
-             ((org-agenda-overriding-header "Active Projects:")
-              (org-agenda-skip-function 'gs/select-projects)))
-        (tags-todo "-INACTIVE-HOLD-CANCELLED-REFILE-ARCHIVE-STYLE=\"habit\"/!-INPROGRESS"
-             ((org-agenda-overriding-header "Standalone Tasks:")
-              (org-agenda-skip-function 'gs/select-standalone-tasks)))
-        (tags-todo "-INACTIVE-HOLD-CANCELLED-REFILE-ARCHIVE/!-INPROGRESS"
-             ((org-agenda-overriding-header "Remaining Project Tasks:")
-              (org-agenda-skip-function 'gs/select-project-tasks)))
-        (alltodo ""
-                 ((org-agenda-overriding-header "Tasks to Refile")
-                  (org-agenda-files '("~/Dropbox/agenda/.refile.org"))
-                  (org-agenda-skip-function
-                   '(oh/agenda-skip :headline-if-restricted-and '(todo)))))
-        (tags "INACTIVE-ARCHIVE"
-              ((org-agenda-overriding-header "Inactive Projects and Tasks")
-               (org-tags-match-list-sublevels nil)))
-        (agenda "" ((org-agenda-overriding-header "Week At A Glance:")
-              (org-agenda-ndays 5)
-              (org-agenda-start-day "+1d")
-              (org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled))
-              (org-agenda-prefix-format '((agenda . "  %-12:c%?-12t %s [%b] ")))))
-        (tags "ENDOFAGENDA"
-              ((org-agenda-overriding-header "End of Agenda")
-               (org-tags-match-list-sublevels nil))))
-   ((org-agenda-start-with-log-mode t)
-    (org-agenda-log-mode-items '(clock))
-    (org-agenda-prefix-format '((agenda . "  %-12:c%?-12t %(gs/org-agenda-add-location-string)% s")
-              (timeline . "  % s")
-              (todo . "  %-12:c %(gs/org-agenda-prefix-string) ")
-              (tags . "  %-12:c %(gs/org-agenda-prefix-string) ")
-              (search . "  %i %-12:c")))
-    (org-agenda-todo-ignore-deadlines 'near)
-    (org-agenda-todo-ignore-scheduled t)))
-  ("X" "Agenda" ((agenda "") (alltodo))
-   ((org-agenda-ndays 10)
-    (org-agenda-start-on-weekday nil)
-    (org-agenda-start-day "-1d")
-    (org-agenda-start-with-log-mode t)
-    (org-agenda-log-mode-items '(closed clock state)))
-   )))
+         ((org-agenda-overriding-header "Habits")
+          (org-agenda-sorting-strategy
+           '(todo-state-down effort-up category-keep))))
+        (" " "Export Schedule" ((agenda "" ((org-agenda-overriding-header "Today's Schedule:")
+                                            (org-agenda-span 'day)
+                                            (org-agenda-ndays 1)
+                                            (org-agenda-start-on-weekday nil)
+                                            (org-agenda-start-day "+0d")
+                                            (org-agenda-log-mode-items '(closed clock))
+                                            (org-agenda-todo-ignore-deadlines nil)))
+                                (tags-todo "-INACTIVE-CANCELLED-ARCHIVE/!INPROGRESS"
+                                           ((org-agenda-overriding-header "Next Tasks:")
+                                            ))
+                                ;; (tags "REFILE-ARCHIVE-REFILE=\"nil\""
+                                ;;       ((org-agenda-overriding-header "Tasks to Refile:")
+                                ;;        (org-tags-match-list-sublevels nil)))
+                                (tags-todo "-INACTIVE-HOLD-CANCELLED-REFILE-ARCHIVE-STYLE=\"habit\"/!-INPROGRESS"
+                                           ((org-agenda-overriding-header "Standalone Tasks:")
+                                            (org-agenda-skip-function 'gs/select-standalone-tasks)))
+                                (tags-todo "-INACTIVE-HOLD-CANCELLED-REFILE-ARCHIVE/!-INPROGRESS"
+                                           ((org-agenda-overriding-header "Remaining Project Tasks:")
+                                            (org-agenda-skip-function 'gs/select-project-tasks)))
+                                (alltodo ""
+                                         ((org-agenda-overriding-header "Tasks to Refile")
+                                          (org-agenda-files '("~/Dropbox/agenda/.refile.org"))
+                                          (org-agenda-skip-function 'gs/select-standalone-tasks)
+                                          ;;(org-agenda-skip-function
+                                          ;; '(oh/agenda-skip :headline-if-restricted-and '(todo)))
+                                          )
+                                         )
+                                (tags-todo "-INACTIVE-HOLD-CANCELLED-REFILE-ARCHIVEr/!"
+                                           ((org-agenda-overriding-header "Active Projects:")
+                                            (org-agenda-skip-function 'gs/select-projects)))
+                                (tags "INACTIVE-ARCHIVE"
+                                      ((org-agenda-overriding-header "Inactive Projects and Tasks")
+                                       (org-tags-match-list-sublevels nil)))
+                                (agenda "" ((org-agenda-overriding-header "Week At A Glance:")
+                                            (org-agenda-ndays 5)
+                                            (org-agenda-start-day "+1d")
+                                            (org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled))
+                                            (org-agenda-prefix-format '((agenda . "  %-12:c%?-12t %s [%b] ")))))
+                                (tags "ENDOFAGENDA"
+                                      ((org-agenda-overriding-header "End of Agenda")
+                                       (org-tags-match-list-sublevels nil))))
+         ((org-agenda-start-with-log-mode t)
+          (org-agenda-log-mode-items '(clock))
+          (org-agenda-prefix-format '((agenda . "  %-12:c%?-12t %(gs/org-agenda-add-location-string)% s")
+                                      (timeline . "  % s")
+                                      (todo . "  %-12:c %(gs/org-agenda-prefix-string) ")
+                                      (tags . "  %-12:c %(gs/org-agenda-prefix-string) ")
+                                      (search . "  %i %-12:c")))
+          (org-agenda-todo-ignore-deadlines 'near)
+          (org-agenda-todo-ignore-scheduled t)))
+        ("X" "Agenda" ((agenda "") (alltodo))
+         ((org-agenda-ndays 10)
+          (org-agenda-start-on-weekday nil)
+          (org-agenda-start-day "-1d")
+          (org-agenda-start-with-log-mode t)
+          (org-agenda-log-mode-items '(closed clock state)))
+         )))
 
 ;; == Agenda Navigation ==
 
