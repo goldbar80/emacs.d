@@ -17,4 +17,9 @@
            " Proj"
          (format " Proj[%s]" (projectile-project-name)))))))
 
+(when (maybe-require-package 'counsel-projectile)
+  (after-load 'projectile
+    (counsel-projectile-mode))
+  )
+
 (provide 'init-projectile)
