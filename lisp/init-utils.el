@@ -55,10 +55,13 @@
     (unless filename
       (error "Buffer '%s' is not visiting a file!" name))
     (progn
-      (when (file-exists-p filename)
-        (rename-file filename new-name 1))
-      (set-visited-file-name new-name)
-      (rename-buffer new-name))))
+      (cond
+       ((vc-backend filename) (vc-rename-file filename new-name))
+       (t (when (file-exists-p filename)
+            (rename-file filename new-name 1))
+          (set-visited-file-name new-name)
+          (rename-buffer new-name)))
+      )))
 
 ;;----------------------------------------------------------------------------
 ;; Browse current HTML file
