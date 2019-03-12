@@ -15,6 +15,7 @@
 (setq use-file-dialog nil)
 (setq use-dialog-box nil)
 (setq inhibit-startup-screen t)
+(set-frame-parameter nil 'undecorated t)
 
 
 ;;----------------------------------------------------------------------------
@@ -40,7 +41,7 @@
 (when (fboundp 'pixel-scroll-mode)
   (pixel-scroll-mode 1))
 
-(let ((no-border '(internal-border-width . 0)))
+(let ((no-border '(internal-border-width . 25)))
   (add-to-list 'default-frame-alist no-border)
   (add-to-list 'initial-frame-alist no-border))
 
