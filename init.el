@@ -182,7 +182,7 @@
 (add-to-list 'tramp-remote-path 'tramp-own-remote-path) ;; repect remote 'path' env. variable
 
 (require 'init-all-the-icons)
-(require 'init-theme)
+(require 'init-modeline)
 (require 'init-mu4e)
 (require 'init-java)
 (require 'init-groovy)
