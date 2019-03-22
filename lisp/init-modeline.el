@@ -3,4 +3,4 @@
       :ensure t
       :hook (after-init . doom-modeline-mode))
 
-(provide 'init-theme)
+(provide 'init-modeline)
