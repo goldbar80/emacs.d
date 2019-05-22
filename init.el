@@ -45,6 +45,18 @@
 ;; Load configs for specific features and modes
 ;;----------------------------------------------------------------------------
 
+;; (require 'exwm)
+;; (require 'exwm-config)
+;; (exwm-config-default)
+;; (require 'exwm-randr)
+;; (setq exwm-randr-workspace-output-plist '(0 "DP3" 1 "DP1"))
+;; (add-hook 'exwm-randr-screen-change-hook
+;;           (lambda ()
+;;             (start-process-shell-command
+;;              "xrandr" nil "xrandr --output DP1 --mode 1920x1080 --pos 0x0 --rotate left  --output DP3 --mode 2560x1600 --pos 1080x0 --rotate normal")))
+;; (exwm-randr-enable)
+
+
 (require-package 'wgrep)
 (require-package 'diminish)
 (require-package 'scratch)
