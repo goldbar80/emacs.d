@@ -32,12 +32,12 @@ This is helpful for writeroom-mode, in particular."
           (set-fontset-font fontset 'hangul
                             '("NanumGothicCoding" . "unicode-bmp")))
       (progn
-        (set-face-attribute 'default nil :font fontset :height 130)
-        (set-fontset-font fontset 'unicode (font-spec :family "Fantasque Sans Mono" :weight 'regular :registry "unicode-bmp"))
+        (set-face-attribute 'default nil :font fontset :height 120)
+        (set-fontset-font fontset 'unicode (font-spec :family "PT Mono" :weight 'regular :registry "unicode-bmp"))
         (set-fontset-font fontset 'unicode (font-spec :family "Symbola" :weight 'regular :registry "unicode-bmp"))
         (set-fontset-font fontset 'latin
                                         ;(font-spec :family "Source Code Pro" :registry "unicode-bmp")
-                          (font-spec :family "Fantasque Sans Mono" :weight 'regular :registry "unicode-bmp")
+                          (font-spec :family "PT Mono" :weight 'regular :registry "unicode-bmp")
                           )
         (set-face-attribute 'variable-pitch nil :family "Roboto Slab")
         (set-fontset-font fontset 'hangul
