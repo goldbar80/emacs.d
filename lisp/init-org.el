@@ -1,6 +1,31 @@
+;;; init-org.el --- Org-mode config -*- lexical-binding: t -*-
+;;; Commentary:
+
+;; Among settings for many aspects of `org-mode', this code includes
+;; an opinionated setup for the Getting Things Done (GTD) system based
+;; around the Org Agenda.  I have an "inbox.org" file with a header
+;; including
+
+;;     #+CATEGORY: Inbox
+;;     #+FILETAGS: INBOX
+
+;; and then set this file as `org-default-notes-file'.  Captured org
+;; items will then go into this file with the file-level tag, and can
+;; be refiled to other locations as necessary.
+
+;; Those other locations are generally other org files, which should
+;; be added to `org-agenda-files-list' (along with "inbox.org" org).
+;; With that done, there's then an agenda view, accessible via the
+;; `org-agenda' command, which gives a convenient overview.
+;; `org-todo-keywords' is customised here to provide corresponding
+;; TODO states, which should make sense to GTD adherents.
+
+;;; Code:
 (require-package 'org-plus-contrib)
 (require 'org)
 (require 'gs-org)
+
+
 
 (when *is-a-mac*
   (maybe-require-package 'grab-mac-link))
@@ -13,7 +38,6 @@
 ;; Various preferences
 (setq org-log-done t
       org-edit-timestamp-down-means-later t
-      org-archive-mark-done nil
       org-hide-emphasis-markers t
       org-catch-invisible-edits 'show
       org-export-coding-system 'utf-8
@@ -29,7 +53,7 @@
 (defun sanityinc/grab-ditaa (url jar-name)
   "Download URL and extract JAR-NAME as `org-ditaa-jar-path'."
   ;; TODO: handle errors
-  (message "Grabbing " jar-name " for org.")
+  (message "Grabbing %s for org." jar-name)
   (let ((zip-temp (make-temp-name "emacs-ditaa")))
     (unwind-protect
         (progn
@@ -58,6 +82,11 @@
       (url-copy-file url org-plantuml-jar-path))))
 
 
+;; Re-align tags when window shape changes
+(after-load 'org-agenda
+  (add-hook 'org-agenda-mode-hook
+            (lambda () (add-hook 'window-configuration-change-hook 'org-agenda-align-tags nil t))))
+
 
 
 
@@ -80,15 +109,16 @@ typical word processor."
           (kill-local-variable 'buffer-face-mode-face))
         (buffer-face-mode 1)
         ;;(delete-selection-mode 1)
-        (set (make-local-variable 'blink-cursor-interval) 0.6)
-        (set (make-local-variable 'show-trailing-whitespace) nil)
-        (set (make-local-variable 'line-spacing) 0.2)
-        (set (make-local-variable 'electric-pair-mode) nil)
+        (setq-local blink-cursor-interval 0.6)
+        (setq-local show-trailing-whitespace nil)
+        (setq-local line-spacing 0.2)
+        (setq-local electric-pair-mode nil)
         (ignore-errors (flyspell-mode 1))
         (visual-line-mode 1))
     (kill-local-variable 'truncate-lines)
     (kill-local-variable 'word-wrap)
     (kill-local-variable 'cursor-type)
+    (kill-local-variable 'blink-cursor-interval)
     (kill-local-variable 'show-trailing-whitespace)
     (kill-local-variable 'line-spacing)
     (kill-local-variable 'electric-pair-mode)
@@ -122,13 +152,43 @@ typical word processor."
 
 ;;; Refiling
 
-;; (setq org-refile-use-cache nil)
+(setq org-refile-use-cache nil)
 
 ;; ;; Targets include this file and any file contributing to the agenda - up to 5 levels deep
 ;; (setq org-refile-targets '((nil :maxlevel . 5) (org-agenda-files :maxlevel . 5)))
 
 ;; (after-load 'org-agenda
 ;;   (add-to-list 'org-agenda-after-show-hook 'org-show-entry))
+(after-load 'org-agenda
+  (add-to-list 'org-agenda-after-show-hook 'org-show-entry))
+
+(advice-add 'org-refile :after (lambda (&rest _) (org-save-all-org-buffers)))
+
+;; Exclude DONE state tasks from refile targets
+(defun sanityinc/verify-refile-target ()
+  "Exclude todo keywords with a done state from refile targets."
+  (not (member (nth 2 (org-heading-components)) org-done-keywords)))
+(setq org-refile-target-verify-function 'sanityinc/verify-refile-target)
+
+(defun sanityinc/org-refile-anywhere (&optional goto default-buffer rfloc msg)
+  "A version of `org-refile' which allows refiling to any subtree."
+  (interactive "P")
+  (let ((org-refile-target-verify-function))
+    (org-refile goto default-buffer rfloc msg)))
+
+(defun sanityinc/org-agenda-refile-anywhere (&optional goto rfloc no-update)
+  "A version of `org-agenda-refile' which allows refiling to any subtree."
+  (interactive "P")
+  (let ((org-refile-target-verify-function))
+    (org-agenda-refile goto rfloc no-update)))
+
+;; Targets start with the file name - allows creating level 1 tasks
+;;(setq org-refile-use-outline-path (quote file))
+(setq org-refile-use-outline-path t)
+(setq org-outline-path-complete-in-steps nil)
+
+;; Allow refile to create parent tasks with confirmation
+(setq org-refile-allow-creating-parent-nodes 'confirm)
 
 ;; (defadvice org-refile (after sanityinc/save-all-after-refile activate)
 ;;   "Save all org buffers after each refile operation."
@@ -506,8 +566,9 @@ typical word processor."
      (ruby . t)
      (screen . nil)
      (,(if (locate-library "ob-sh") 'sh 'shell) . t)
-     (sql . nil)
+     (sql . t)
      (sqlite . t))))
 
 
 (provide 'init-org)
+;;; init-org.el ends here
