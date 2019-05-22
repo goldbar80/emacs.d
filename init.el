@@ -207,6 +207,7 @@
 (require 'init-groovy)
 (require 'init-pdf)
 (require 'init-eterm)
+(require 'init-fonts)
 (require 'init-local nil t)
 
 (provide 'init)
