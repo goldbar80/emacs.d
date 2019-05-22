@@ -14,9 +14,25 @@
 ;;       (add-hook 'python-mode-hook
 ;;                 (lambda () (sanityinc/local-push-company-backend 'company-anaconda))))))
 
+;; (use-package lsp-python-ms
+;;  :ensure nil
+;;  :demand t
+;;  :hook (python-mode . lsp)
+;;  :config
+
+;;  ;; for dev build of language server
+;;  (setq lsp-python-ms-dir
+;;        (expand-file-name "~/git/python-language-server/output/bin/Release/"))
+;;  ;; for executable of language server, if it's not symlinked on your PATH
+;;  (setq lsp-python-ms-executable
+;;        "~/git/python-language-server/output/bin/Release/linux-x64/publish/Microsoft.Python.LanguageServer"))
+
 (require-package 'elpy)
 (require-package 'flycheck)
+(require-package 'pyenv-mode)
+(require-package 'pyenv-mode-auto)
 
+(pyenv-mode)
 (elpy-enable)
 
 (when (require 'flycheck nil t)
